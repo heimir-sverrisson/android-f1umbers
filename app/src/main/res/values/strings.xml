@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">F1Numbers</string>
     <string name="action_settings">Settings</string>
+    <string name="pref_host_url">Database Host URL</string>
+    <string name="pref_jwt_secret">JWT Secret</string>
+    <string name="pref_label">Preference Label</string>
 </resources>

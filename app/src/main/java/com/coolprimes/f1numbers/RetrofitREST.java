@@ -32,10 +32,14 @@ public class RetrofitREST {
             @Override
             public void onResponse(Call<Driver[]> call, Response<Driver[]> response) {
                 Driver[] drivers = response.body();
-                Driver d = drivers[0];
-                final String fullName = d.getFirstName() + " " + d.getLastName();
-                final DateFormat df = new SimpleDateFormat("dd.MM.yyyy");
-                v.setText(fullName + ", born: " + df.format(d.getDateOfBirth()));
+                if (drivers != null) {
+                    Driver d = drivers[0];
+                    final String fullName = d.getFirstName() + " " + d.getLastName();
+                    final DateFormat df = new SimpleDateFormat("dd.MM.yyyy");
+                    v.setText(fullName + ", born: " + df.format(d.getDateOfBirth()));
+                } else {
+                    v.setText("No response!");
+                }
             }
 
             @Override
@@ -47,4 +51,3 @@ public class RetrofitREST {
         });
     }
 }
-
