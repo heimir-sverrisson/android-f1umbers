@@ -1,7 +1,7 @@
 package com.coolprimes.f1numbers;
 
 /**
- * Created by Heimir Sverrisson on 01/05/2016.
+ * Created: Heimir Sverrisson on 01/05/2016.
  */
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;

@@ -1,7 +1,7 @@
 package com.coolprimes.f1numbers;
 
 /**
- * Created by Heimir Sverrisson on 04/05/2016.
+ * Created: Heimir Sverrisson on 04/05/2016.
  */
 import android.app.Activity;
 import android.os.Bundle;

@@ -4,4 +4,6 @@
     <string name="pref_host_url">Database Host URL</string>
     <string name="pref_jwt_secret">JWT Secret</string>
     <string name="pref_label">Preference Label</string>
+    <string name="waiting_for_server_response">Waiting for server response...</string>
+    <string name="no_response">No Response!</string>
 </resources>

@@ -1,9 +1,8 @@
 package com.coolprimes.f1numbers;
 
 import android.content.Intent;
-import android.net.Uri;
+import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -15,11 +14,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import com.google.android.gms.appindexing.Action;
-import com.google.android.gms.appindexing.AppIndex;
-import com.google.android.gms.common.api.GoogleApiClient;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     private final static String LOG_TAG = "f1numbers.MainActivity";
@@ -49,14 +43,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             btnGetDrivers.setOnClickListener(this);
         }
         serverResponse = (TextView) findViewById(R.id.textViewServerResponse);
-        JwtProvider jwtProvider = new JwtProvider("leyndarmal");
-        jwt = jwtProvider.getJwtString("heimir");
-        Log.d(LOG_TAG,"JWT: " + jwt);
     }
 
     @Override
     public void onClick(View v) {
-        RetrofitREST retrofitREST = new RetrofitREST(serverResponse);
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        String jwtSecret = sharedPreferences.getString("pref_jwt_secret","");
+        String url = sharedPreferences.getString("pref_host_url","");
+        JwtProvider jwtProvider = new JwtProvider(jwtSecret);
+        jwt = jwtProvider.getJwtString("heimir");
+        Log.d(LOG_TAG,"JWT: " + jwt);
+        RetrofitREST retrofitREST = new RetrofitREST(serverResponse, url);
         switch (v.getId()) {
             case R.id.btnGetDrivers:
                 retrofitREST.getDriver(String.format("Bearer %s", jwt), 2);

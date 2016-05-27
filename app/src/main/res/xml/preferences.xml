@@ -3,7 +3,7 @@
     <EditTextPreference
         android:key="pref_host_url"
         android:title="@string/pref_host_url"
-        android:defaultValue="192.168.1.10:3000" />
+        android:defaultValue="https://coolprimes.com/postgrest" />
     <EditTextPreference
         android:key="pref_jwt_secret"
         android:title="@string/pref_jwt_secret"
