@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.coolprimes.f1numbers">
+
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
@@ -18,11 +19,20 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".SettingsActivity" android:label="@string/pref_label"
+        <activity
+            android:name=".SettingsActivity"
+            android:label="@string/pref_label"
             android:screenOrientation="nosensor">
             <intent-filter>
                 <action android:name=".SettingsActivity" />
                 <category android:name="android.intent.PREFERENCE" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".DriverListActivity">
+            <intent-filter>
+                <action android:name=".DriverListActivity"/>
+                <category android:name="android.intent.DRIVERS"/>
             </intent-filter>
         </activity>
     </application>

@@ -2,6 +2,7 @@ package com.coolprimes.f1numbers;
 
 import android.util.Log;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -22,16 +23,15 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 public class RetrofitREST {
     private final static String LOG_TAG = "f1numbers.RetrofitREST";
-    private TextView v;
+    private MainActivity m;
     private String url;
     private Gson gsonPostgresDate;
 
-    public RetrofitREST(TextView v, String url){
-        this.v = v;
+    public RetrofitREST(MainActivity m, String url){
+        this.m = m;
         this.url = url;
         gsonPostgresDate = new GsonBuilder()
                 .setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSS").create();
-        v.setText(R.string.waiting_for_server_response);
     }
 
     private Retrofit getRetrofit() {
@@ -41,21 +41,18 @@ public class RetrofitREST {
                 .build();
     }
 
-    public void getDriver(String jwt, int id){
+    public void getDrivers(String jwt){
         Retrofit retrofit = getRetrofit();
         F1NumbersService f1NumbersService = retrofit.create(F1NumbersService.class);
-        Call<Driver[]> call = f1NumbersService.getDriver(jwt, String.format(Locale.US, "eq.%d", id));
+        Call<Driver[]> call = f1NumbersService.getDrivers(jwt);
         call.enqueue(new Callback<Driver[]>() {
             @Override
             public void onResponse(Call<Driver[]> call, Response<Driver[]> response) {
                 Driver[] drivers = response.body();
                 if (drivers != null) {
-                    Driver d = drivers[0];
-                    final String fullName = d.getFirstName() + " " + d.getLastName();
-                    final DateFormat df = new SimpleDateFormat("dd.MM.yyyy");
-                    v.setText(fullName + ", born: " + df.format(d.getDateOfBirth()));
+                    m.setDrivers(drivers);
                 } else {
-                    v.setText(R.string.no_response);
+                    Toast.makeText(m, "No response from server!", Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -63,7 +60,7 @@ public class RetrofitREST {
             public void onFailure(Call<Driver[]> call, Throwable t) {
                 Date now = new Date();
                 Log.d(LOG_TAG, "Rest call failed: " + t.getMessage());
-                v.setText(t.getMessage());
+                Toast.makeText(m, t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }

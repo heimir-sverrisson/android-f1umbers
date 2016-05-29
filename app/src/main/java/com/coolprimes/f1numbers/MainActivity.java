@@ -14,11 +14,15 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     private final static String LOG_TAG = "f1numbers.MainActivity";
     private TextView serverResponse;
     private String jwt;
+    private Driver [] drivers;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +49,24 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         serverResponse = (TextView) findViewById(R.id.textViewServerResponse);
     }
 
+    public void setDrivers(Driver [] drivers){
+        if (drivers == null){
+            Toast.makeText(this, "No driver data returned!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        this.drivers = drivers;
+        Intent driverListIntent = new Intent(this, DriverListActivity.class);
+        Bundle b = new Bundle();
+        ArrayList<String> driverList = new ArrayList<>();
+        for(Driver d : drivers){
+            String fullName = String.format("%s %s", d.getFirstName(), d.getLastName());
+            driverList.add(fullName);
+        }
+        b.putStringArrayList("drivers", driverList);
+        driverListIntent.putExtras(b);
+        startActivity(driverListIntent);
+    }
+
     @Override
     public void onClick(View v) {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
@@ -53,10 +75,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         JwtProvider jwtProvider = new JwtProvider(jwtSecret);
         jwt = jwtProvider.getJwtString("heimir");
         Log.d(LOG_TAG,"JWT: " + jwt);
-        RetrofitREST retrofitREST = new RetrofitREST(serverResponse, url);
+        RetrofitREST retrofitREST = new RetrofitREST(this, url);
         switch (v.getId()) {
             case R.id.btnGetDrivers:
-                retrofitREST.getDriver(String.format("Bearer %s", jwt), 2);
+                retrofitREST.getDrivers(String.format("Bearer %s", jwt));
         }
     }
 

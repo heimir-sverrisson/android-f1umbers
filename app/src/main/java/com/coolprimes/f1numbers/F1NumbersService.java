@@ -12,5 +12,6 @@ import retrofit2.http.Query;
 public interface F1NumbersService {
     @Headers({"Cache-Control: max-age=640000", "User-Agent: F1NumbersAndroid"})
     @GET("drivers") // ?id=eq.{id}
+    Call<Driver[]> getDrivers(@Header("Authorization") String jwt);
     Call<Driver[]> getDriver(@Header("Authorization") String jwt ,@Query("id") String id);
 }
