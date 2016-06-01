@@ -7,11 +7,10 @@ import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Headers;
-import retrofit2.http.Query;
 
 public interface F1NumbersService {
-    @Headers({"Cache-Control: max-age=640000", "User-Agent: F1NumbersAndroid"})
-    @GET("drivers") // ?id=eq.{id}
-    Call<Driver[]> getDrivers(@Header("Authorization") String jwt);
-    Call<Driver[]> getDriver(@Header("Authorization") String jwt ,@Query("id") String id);
+    @Headers({"Cache-Control: max-age=640001", "User-Agent: F1NumbersAndroid"})
+    @GET("vw_drivers_and_teams")
+    Call<TeamDriver[]> getDriversAndTeams(@Header("Authorization") String jwt);
+    // Call<TeamDriver[]> getDriver(@Header("Authorization") String jwt ,@Query("id") String id);
 }

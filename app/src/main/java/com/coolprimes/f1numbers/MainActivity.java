@@ -16,13 +16,15 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     private final static String LOG_TAG = "f1numbers.MainActivity";
     private TextView serverResponse;
     private String jwt;
-    private Driver [] drivers;
+    private TeamDriver[] teamDrivers;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,20 +51,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         serverResponse = (TextView) findViewById(R.id.textViewServerResponse);
     }
 
-    public void setDrivers(Driver [] drivers){
-        if (drivers == null){
+    public void setTeamDrivers(TeamDriver[] teamDrivers){
+        if (teamDrivers == null){
             Toast.makeText(this, "No driver data returned!", Toast.LENGTH_SHORT).show();
             return;
         }
-        this.drivers = drivers;
+        this.teamDrivers = teamDrivers;
         Intent driverListIntent = new Intent(this, DriverListActivity.class);
         Bundle b = new Bundle();
-        ArrayList<String> driverList = new ArrayList<>();
-        for(Driver d : drivers){
-            String fullName = String.format("%s %s", d.getFirstName(), d.getLastName());
-            driverList.add(fullName);
-        }
-        b.putStringArrayList("drivers", driverList);
+        b.putString("teamDrivers", new Gson().toJson(teamDrivers));
         driverListIntent.putExtras(b);
         startActivity(driverListIntent);
     }
