@@ -25,7 +25,11 @@ public class RetrofitREST {
 
     public RetrofitREST(MainActivity m, String url){
         this.m = m;
-        this.url = url;
+        if(url.endsWith("/")){
+            this.url = url;
+        } else {
+            this.url = url + "/";
+        }
         gsonPostgresDate = new GsonBuilder()
                 .setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSSSS").create();
     }
@@ -54,7 +58,6 @@ public class RetrofitREST {
 
             @Override
             public void onFailure(Call<TeamDriver[]> call, Throwable t) {
-                Date now = new Date();
                 Log.d(LOG_TAG, "Rest call failed: " + t.getMessage());
                 Toast.makeText(m, t.getMessage(), Toast.LENGTH_SHORT).show();
             }
